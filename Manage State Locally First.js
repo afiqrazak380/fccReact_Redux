@@ -8,7 +8,6 @@ class DisplayMessages extends React.Component {
     // Binding methods to the component instance
     this.handleChange = this.handleChange.bind(this);
     this.submitMessage = this.submitMessage.bind(this);
-    this.clearMessage = this.clearMessage.bind(this);
   }
 
   handleChange(event) {
@@ -19,26 +18,15 @@ class DisplayMessages extends React.Component {
   }
 
   submitMessage() {
-    // Concatenate the current message to the messages array in state
-    // and clear the value of the input
-    this.setState({
-      messages: [...this.state.messages, this.state.input],
+    // Add the current input to the messages array in state
+    // and clear the current input
+    this.setState((state) => ({
+      messages: [...state.messages, state.input],
       input: '',
-    });
-  }
-
-  clearMessage() {
-    this.setState({
-      messages: [],
-    });
+    }));
   }
 
   render() {
-    // Use .map on the messages array to render li elements
-    const messageList = this.state.messages.map((message, index) => (
-      <li key={index}>{message}</li>
-    ));
-
     return (
       <div>
         <h2>Type in a new Message:</h2>
@@ -48,14 +36,15 @@ class DisplayMessages extends React.Component {
           onChange={this.handleChange}
           placeholder='Type your message'
         />
-        <button onClick={this.submitMessage}>Add Message</button>
-        <button onClick={this.clearMessage}>Clear</button>
-        <ul>{messageList}</ul>
+        <button onClick={this.submitMessage}>Add message</button>
+        <ul>
+          {/* Use .map to render li elements for each message in the array */}
+          {this.state.messages.map((message, index) => (
+            <li key={index}>{message}</li>
+          ))}
+        </ul>
         {/* Change code above this line */}
       </div>
     );
   }
 }
-
-// Example of how to use the component
-ReactDOM.render(<DisplayMessages />, document.getElementById('root'));
